@@ -220,6 +220,11 @@ fork, spawnClient, cancel, catch},%
 %\renewcommand{\paragraph}[1]{\textbf{\textit{#1}}}
 \usepackage{tikz-cd}
 
+\tikzstyle{arrow} = [thick,->]
+\tikzstyle{diagnode} = [rectangle, rounded corners, minimum width=8cm, minimum
+height=1cm,text centered, text width=8cm, draw=black, anchor=center, fill=red!30]
+
+
 \newcommand{\exnty}{\mkwd{Exn}\xspace}
 \newcommand{\raiseexnP}[1]{\calcwd{raise} \: #1}
 \newcommand{\tryinunless}[4]{\calcwd{try} \: #1 \: \calcwd{as} \: #2 \:
@@ -235,3 +240,36 @@ fork, spawnClient, cancel, catch},%
 
 \newcommand{\lact}{\lambda_{\text{act}}\xspace}
 \newcommand{\lch}{\lambda_{\text{ch}}\xspace}
+
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstset{
+   language=JavaScript,
+   backgroundcolor=\color{lightgray},
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numberstyle=\footnotesize,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+
