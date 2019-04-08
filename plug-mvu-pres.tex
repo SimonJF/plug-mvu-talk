@@ -243,6 +243,7 @@ function _updateDom(doc) {
     \begin{itemize}
       \itemR Formal model would make the paradigm more precisely-defined and easier to implement in future
     \end{itemize}
+    \vspace{1em}
   \item {\Large \textbf{Can we use MVU to write web applications with distributed session types?}}
     \begin{itemize}
       \itemR Writing client code using distributed session-typed channels in Links is painful: can we do better?
@@ -259,19 +260,90 @@ function _updateDom(doc) {
 \begin{frame}{Key concepts}
 
   \begin{fullpageitemize}
+  \item {\Large \textbf{Typed HTML and antiquotations}}
+    \begin{itemize}
+      \itemR HTML is typed and first class
+      \itemR Terms can be spliced into HTML elements and attributes
+    \end{itemize}
+    \vspace{1em}
+  \item {\Large \textbf{Concurrency}}
+    \begin{itemize}
+      \itemR Naturally concurrent: modelled by a concurrent $\lambda$-calculus (with actor-style concurrency)
+    \end{itemize}
   \end{fullpageitemize}
 \end{frame}
 
 \begin{frame}{Syntax}
+
+    \small
+    \begin{syntax}
+      \text{Types} & A, B & ::= & \one \midspace A \to B \midspace A \times B  \midspace A + B \midspace \htmlty{A} \midspace C \\
+    \text{Base types} & C & ::= & \mkwd{String} \midspace \mkwd{Int} \midspace \mkwd{Bool} \\ \\
+    \text{String literals} & s \\
+    \text{Integers} & n \\
+    \text{Booleans} & b & ::= & \ttrue \midspace \ffalse \\
+    \text{Terms} & L, M, N & ::= &
+      % Basic lambda calculus
+      x \midspace \lambda x . M \midspace M \app N \midspace () \midspace (M, N) \midspace \letin{(x, y)}{M}{N} \\
+      & & \midspace & \inl{x} \midspace \inr{x} \midspace \caseof{L}{\inl{x} \mapsto M; \inr{y} \mapsto N} \\
+      & & \midspace & s \midspace n \midspace b \midspace \htmlterm{H} \\
+      \\
+    \text{Tag names} & \tagname{t} \\
+    \text{Identifiers} & i \\
+    \text{Attribute names} & \mathit{at} \\
+    \text{Event handlers} & \mkwd{eh} & ::= &
+      \texttt{onClick} \midspace \texttt{onKeyDown} \midspace \texttt{onKeyUp} \\
+      \text{Attributes} & a & ::= & \mkwd{id} = i \midspace \mkwd{eh} = \textit{ab} \midspace  \textit{at} = \textit{ab}\\
+      \text{Attribute bodies} & \textit{ab} & ::= & \antiquote{M} \midspace V \\
+      \text{HTML} & H & ::= & \htmltag{t}{\seq{a}}{\seq{H}} \midspace s  \midspace \antiquote{M} \\
+\end{syntax}
 \end{frame}
 
 \begin{frame}{Typing Judgements}
+
+  \begin{center}
+  {\Huge \framebox{$\Gamma \vdash M : A$}}
+  \vspace{0.5em}
+
+    ``Under environment $\Gamma$, term $M$ has type $A$.''
+  \end{center}
+  \vspace{1em}
+
+  \begin{center}
+  {\Huge \framebox{$\Gamma \vdash a \produces{A}$}}
+  \vspace{0.5em}
+
+    ``Under environment $\Gamma$, HTML attribute $a$ produces messages of type $A$.''
+  \end{center}
+  \vspace{1em}
+
+  \begin{center}
+  {\Huge \framebox{$\Gamma \vdash H \produces{A}$}}
+  \vspace{0.5em}
+
+    ``Under environment $\Gamma$, HTML element $a$ produces messages of type $A$.''
+  \end{center}
 \end{frame}
 
 \begin{frame}{Configurations}
 \end{frame}
 
 \begin{frame}{Results}
+
+\begin{theorem}[Preservation (Configurations)]
+  \label{thm:config-pres}
+  If $\Gamma \vdash \config{C}$ and $\config{C} \ceval \config{D}$, then $\Gamma \vdash \config{D}$.
+\end{theorem}
+%
+\vspace{2em}
+%
+  \begin{theorem}[Event Progress]\label{thm:event-progress}
+    If $\cdot \vdash \config{C}$, then either:
+    \begin{itemize}
+      \itemR $\config{C}$ can be written $\sys{\handlerproc{\idle}{V_m}{V_v}{V_u}{\epsilon}}{\vh}{\epsilon}{\epsilon}$; or
+      \itemR there exists some $\config{C}'$ such that $\config{C} \ceval \config{C'}$.
+      \end{itemize}
+  \end{theorem}
 \end{frame}
 
 \framecard{{\color{white}\bigtext{MVU + Distributed Session Types}}}
