@@ -1,0 +1,266 @@
+model = ""
+
+view = \contents.
+  <div>
+    <form>
+      <input type="text" onInput={\str. str}>
+        <div>{reverseString(contents)}</div>
+      </input>
+    </form>
+  </div>
+
+updt = \(msg, contents) = contents
+
+vh =
+  <div>
+      <form>
+        <input id=1 type="text" onInput=\str. str>
+          <div id=2></div>
+        </input>
+      </form>
+  </div>
+
+
+
+initial configuration
+< idle | m | v | u | eps> ; vh; eps; eps
+
+user clicks on box with id=1
+
+< idle | m | v | u | eps> ; vh; eps; click(1)
+
+not handled
+
+< idle | m | v | u | eps> ; vh ; eps; eps
+
+user types 'h'
+< idle | m | v | u | eps>; vh ; eps; input(i, "h")
+
+handled!
+< idle | m | v | u | eps>; vh ; (\str.str) "h"; eps
+
+beta
+< idle | m | v | u | eps>; vh; "h" ; eps
+
+deliver
+< idle | m | v | u | "h">; vh; eps; eps
+
+handle
+  let m' = (\lambda ((msg, contents)). msg) (m, "h") in
+< let html = v m' in                                      | idle | m | v | u | eps>; vh; eps; eps
+  (m', html)
+
+beta
+
+  let m' = "h" in
+< let html = v m' in | idle | m | v | u | eps>; vh; eps; eps
+  (m', html)
+
+beta
+
+< let html = v "h" in | idle | m | v | u | eps>; vh; eps; eps
+  ("h", html)
+
+beta
+
+(\contents.
+  <div>
+    <form>
+      <input type="text" onInput={\str. str}>
+        <div>{reverseString(contents)}</div>
+      </input>
+    </form>
+  </div>) "h"
+
+beta
+
+  <div>
+    <form>
+      <input type="text" onInput={\str. str}>
+        <div>{reverseString("h")}</div>
+      </input>
+    </form>
+  </div>
+
+beta
+
+  <div>
+    <form>
+      <input type="text" onInput=\str. str>
+        <div>{reverseString("h")}</div>
+      </input>
+    </form>
+  </div>
+
+beta
+
+  <div>
+    <form>
+      <input type="text" onInput=\str. str>
+        <div>{"h"}</div>
+      </input>
+    </form>
+  </div>
+
+beta
+
+  <div>
+    <form>
+      <input type="text" onInput=\str. str>
+        <div>"h"</div>
+      </input>
+    </form>
+  </div>
+
+=
+
+< let html =
+  <div>
+      <form>
+        <input type="text" onInput=\str. str>
+          <div>"h"</div>
+        </input>
+      </form>
+    </div>
+  in                                              | idle | m | v | u | eps>; vh; eps; eps
+  ("h", html)
+
+beta
+
+
+< ("h",
+      <div>
+        <form>
+          <input type="text" onInput=\str. str>
+            <div>"h"</div>
+          </input>
+        </form>
+      </div>)                                   | idle | m | v | u | eps>; vh; eps; eps
+
+
+E-Update
+
+< idle | "h" | v | u | eps>; <div>                                       ; eps; eps >
+                               <form>
+                                 <input type="text" onInput=\str. str>
+                                   <div>"h"</div>
+                                 </input>
+                               </form>
+                             </div>
+
+user types 'i'
+< idle | m | v | u | eps>; vh ; eps; input(i, "hi")
+
+handled!
+< idle | m | v | u | eps>; vh ; (\str.str) "hi"; eps
+
+beta
+< idle | m | v | u | eps>; vh; "hi" ; eps
+
+deliver
+< idle | m | v | u | "hi">; vh; eps; eps
+
+handle
+  let m' = (\lambda ((msg, contents)). msg) (m, "hi") in
+< let html = v m' in                                      | idle | m | v | u | eps>; vh; eps; eps
+  (m', html)
+
+beta
+
+  let m' = "hi" in
+< let html = v m' in | idle | m | v | u | eps>; vh; eps; eps
+  (m', html)
+
+beta
+
+< let html = v "hi" in | idle | m | v | u | eps>; vh; eps; eps
+  ("h", html)
+
+beta
+
+(\contents.
+  <div>
+    <form>
+      <input type="text" onInput={\str. str}>
+        <div>{reverseString(contents)}</div>
+      </input>
+    </form>
+  </div>) "h"
+
+beta
+
+  <div>
+    <form>
+      <input type="text" onInput={\str. str}>
+        <div>{reverseString("hi")}</div>
+      </input>
+    </form>
+  </div>
+
+beta
+
+  <div>
+    <form>
+      <input type="text" onInput=\str. str>
+        <div>{reverseString("h")}</div>
+      </input>
+    </form>
+  </div>
+
+beta
+
+  <div>
+    <form>
+      <input type="text" onInput=\str. str>
+        <div>{"ih"}</div>
+      </input>
+    </form>
+  </div>
+
+beta
+
+  <div>
+    <form>
+      <input type="text" onInput=\str. str>
+        <div>"ih"</div>
+      </input>
+    </form>
+  </div>
+
+=
+
+< let html =
+  <div>
+      <form>
+        <input type="text" onInput=\str. str>
+          <div>"ih"</div>
+        </input>
+      </form>
+    </div>
+  in                                              | idle | m | v | u | eps>; vh; eps; eps
+  ("ih", html)
+
+beta
+
+
+< ("h",
+      <div>
+        <form>
+          <input type="text" onInput=\str. str>
+            <div>"h"</div>
+          </input>
+        </form>
+      </div>)                                   | idle | m | v | u | eps>; vh; eps; eps
+
+
+E-Update
+
+< idle | "ih" | v | u | eps>; <div>                                       ; eps; eps >
+                               <form>
+                                 <input type="text" onInput=\str. str>
+                                   <div>"ih"</div>
+                                 </input>
+                               </form>
+                             </div>
+
+

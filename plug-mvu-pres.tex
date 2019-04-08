@@ -61,7 +61,7 @@ $
 \end{frame}
 
 
-\begin{frame}[fragile]{Vanilla JS}
+\begin{frame}[fragile]{Vanilla Links Implementation}
 %fun getProp(id, propName) { ... }
 %fun setProp(id, propName, newVal) { ... }
   \begin{lstlisting}[language=links]
@@ -124,7 +124,6 @@ fun mainPage() {
 
   \begin{fullpageitemize}
   \itemR Statically-typed, Haskell-esque, purely-functional programming language, geared towards web programming
-  \itemR Primary backend is JavaScript
   \itemR Originally based on applicative functional reactive programming
     \begin{itemize}
       \itemR \ldots however the designers later (correctly) realised that message passing was a better fit
@@ -136,7 +135,7 @@ fun mainPage() {
 
 \begin{frame}[fragile]{Links-Elm: A Box and a Label}
 
-\begin{lstlisting}[language=links]
+\begin{lstlisting}[language=Links]
 typename Model = (contents: String);
 typename Message = [| UpdateBox: String |];
 
@@ -161,7 +160,7 @@ fun mainPage() {
 \begin{frame}[fragile]{The Essence of the Elm Architecture}
 
   \begin{fullpageitemize}
-  \itemR<1-> User-defined Types:
+  \itemR<1-> User-defined types:
     \begin{itemize}
       \itemR Model type \verb+Model+, containing application data
       \itemR Message type \verb+Msg+, describing messages produced by components
@@ -239,11 +238,28 @@ function _updateDom(doc) {
 
 
 \begin{frame}{Two questions}
+  \begin{fullpageitemize}
+  \item {\Large \textbf{What would be a sensible formal model for MVU?}}
+    \begin{itemize}
+      \itemR Formal model would make the paradigm more precisely-defined and easier to implement in future
+    \end{itemize}
+  \item {\Large \textbf{Can we use MVU to write web applications with distributed session types?}}
+    \begin{itemize}
+      \itemR Writing client code using distributed session-typed channels in Links is painful: can we do better?
+    \end{itemize}
+  \end{fullpageitemize}
 \end{frame}
 
 \framecard{{\color{white}\bigtext{Formalising MVU}}}
 
+\begin{frame}{Formalism by Example}
+
+\end{frame}
+
 \begin{frame}{Key concepts}
+
+  \begin{fullpageitemize}
+  \end{fullpageitemize}
 \end{frame}
 
 \begin{frame}{Syntax}
