@@ -135,21 +135,19 @@ fun mainPage() {
 
 \begin{frame}[fragile]{Links-MVU: A Box and a Label}
 \begin{lstlisting}[language=Links]
-
 typename Model = (contents: String);
 typename Message = [| UpdateBox: String |];
 
-sig updt : (Message, Model) ~%~> Model
-fun updt(msg, model) {
-  switch (msg) { case UpdateBox(newStr) -> (contents = newStr) }
-}
+fun updt(UpdateBox(newStr), model) { newStr }
+
 fun view(model) {
   var a0 = MvuAttrs.empty; var h0 = MvuHTML.empty;
-  div(a0,
-    form(a0,
-      input(type("text") +@ onKeyUp(fun(str) { UpdateBox(str) }), h0)) +*
+  div(a0, form(a0,
+      input(type("text") +@
+            onKeyUp(fun(str) { UpdateBox(str) }), h0)) +*
     div(a0, textNode(reverseString(model.contents))))
 }
+
 fun mainPage() {
   Mvu.runSimple("placeholder", (contents=""), view, updt);
   page <html><body><div id="placeholder"></div></body></html>
@@ -289,7 +287,8 @@ function _updateDom(doc) {
     \quad
       \ot{div} \\
       \qquad \ot{form} \\
-      \quad \qquad \htmltag{input}{\attr{id}{1} \; \attr{type}{"text"} \; \attr{value}{"h"} \; \attr{onInput}{\antiquote{\lambda x . x}}}{} \\
+      \quad \qquad \htmltag{input}{\attr{id}{1} \; \attr{type}{"text"} \;
+      \attr{onInput}{\antiquote{\lambda x . x}}}{} \\
       \quad \qquad \htmltag{div}{\attr{id}{2}}{\antiquote{\mkwd{reverseString}(\textit{contents})}} \\
       \qquad \ct{form} \\
     \quad
@@ -313,7 +312,8 @@ function _updateDom(doc) {
     \quad
       \ot{div} \\
       \qquad \ot{form} \\
-      \quad \qquad \htmltag{input}{\attr{id}{1} \; \attr{type}{"text"} \; \attr{value}{"h"} \; \attr{onInput}{\antiquote{\lambda x . x}}}{} \\
+      \quad \qquad \htmltag{input}{\attr{id}{1} \; \attr{type}{"text"} \; \attr{value}{\antiquote{\textit{contents}}} \;
+        \attr{onInput}{\antiquote{\lambda x . x}}}{} \\
       \quad \qquad \htmltag{div}{\attr{id}{2}}{\antiquote{\mkwd{reverseString}(\textit{contents})}} \\
       \qquad \ct{form} \\
     \quad
@@ -323,15 +323,13 @@ function _updateDom(doc) {
 \end{frame}
 
 \begin{frame}{Formalism by Example}
-
-
   \[
     \vh \defeq
     \bl
       \ot{div} \\
       \quad \ot{form} \\
       \qquad \htmltag{input}{\attr{id}{1} \; \attr{type}{"text"} \; \attr{value}{"h"} \; \attr{onInput}{\lambda x . x}}{} \\
-      \qquad \htmltag{div}{\attr{id}{2}}{} \\
+      \qquad \htmltag{div}{\attr{id}{2}}{h} \\
       \quad \ct{form} \\
       \ct{div} \\
     \el
@@ -346,15 +344,15 @@ function _updateDom(doc) {
     }
   }
 
-  \only<2>{
-    {
-      \Large
-    \[
-      \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\clickevt{1}}
-    \]
-    }
-  }
-
+ \only<2>{
+   {
+     \Large
+   \[
+     \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\clickevt{1}}
+   \]
+   }
+ }
+%
   \only<3>{
     {
       \Large
@@ -375,58 +373,105 @@ function _updateDom(doc) {
     \]
     }
   }
+%
+%
+ \only<5>{
+   {
+     \Large
+   \[
+     \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\inputevt{1}{"hi"}}
+   \]
+   }
+ }
+
+ \only<6>{
+   {
+   \Large
+   \[
+     \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{(\lambda x . x) \app "hi"}{\epsilon}
+   \]
+   }
+   %
+   \[
+     \vh(1, \mkwd{onInput}) = \lambda x . x
+   \]
+ }
+
+ \only<7>{
+   {
+   \Large
+   \[
+     \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{"hi"}{\epsilon}
+   \]
+   }
+ }
+
+ \only<8>{
+   {
+   \Large
+   \[
+     \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{"hi"}}{\vh}{\epsilon}{\epsilon}
+   \]
+   }
+ }
+
+ \only<9>{
+   {
+   \Large
+   \[
+     \sys{\handlerproc{
+         {\normalsize
+         \begin{array}{l}
+           \begin{aligned}
+             & \letintwo{m'}{(\lambda (\textit{model}, \textit{msg}). \textit{msg}) \app ("\text{h}", "\text{hi}")} \\
+             & \letintwo{\textit{html}}{v \app m'} \\
+             & (m', \textit{html})
+           \end{aligned}
+         \end{array}
+       }
+     }{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\epsilon}
+   \]
+   }
+ }
+
+ \only<10>{
+   {
+   \Large
+   \[
+     \sys{\handlerproc{
+         {\normalsize
+         \begin{array}{l}
+           \begin{aligned}
+             & \letintwo{m'}{"\text{hi}"} \\
+             & \letintwo{\textit{html}}{v \app m'} \\
+             & (m', \textit{html})
+           \end{aligned}
+         \end{array}
+       }
+     }{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\epsilon}
+   \]
+   }
+ }
+
+ \only<11>{
+   {
+   \Large
+   \[
+     \sys{\handlerproc{
+         {\normalsize
+         \begin{array}{l}
+           \begin{aligned}
+             & \letintwo{\textit{html}}{v \app "\text{hi}"} \\
+             & ("\text{hi}", \textit{html})
+           \end{aligned}
+         \end{array}
+       }
+     }{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\epsilon}
+   \]
+   }
+ }
 
 
-  \only<5>{
-    {
-      \Large
-    \[
-      \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\inputevt{1}{"hi"}}
-    \]
-    }
-  }
-
-  \only<6>{
-    {
-    \Large
-    \[
-      \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{(\lambda x . x) \app "hi"}{\epsilon}
-    \]
-    }
-    %
-    \[
-      \vh(1, \mkwd{onInput}) = \lambda x . x
-    \]
-  }
-
-  \only<7>{
-    {
-    \Large
-    \[
-      \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{"hi"}{\epsilon}
-    \]
-    }
-  }
-
-  \only<8>{
-    {
-    \Large
-    \[
-      \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{"hi"}}{\vh}{\epsilon}{\epsilon}
-    \]
-    }
-  }
-
-  \only<9>{
-    {
-    \Large
-    \[
-      \sys{\handlerproc{
-          dddd
-      }{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\epsilon}
-    \]
-    }
-  }
 \end{frame}
 
 \begin{frame}{Syntax}
