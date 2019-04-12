@@ -3,9 +3,8 @@ model = ""
 view = \contents.
   <div>
     <form>
-      <input type="text" onInput={\str. str}>
-        <div>{reverseString(contents)}</div>
-      </input>
+      <input type="text" onInput={\str. str}></input>
+      <div>{reverseString(contents)}</div>
     </form>
   </div>
 

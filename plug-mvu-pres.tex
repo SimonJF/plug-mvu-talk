@@ -276,6 +276,157 @@ function _updateDom(doc) {
 
 \begin{frame}{Formalism by Example}
 
+  \begin{mathpar}
+    \mkwd{model} \defeq "h"
+
+    \mkwd{updt} \defeq \lambda (\text{msg}, \text{model}) . \text{msg}
+  \end{mathpar}
+
+
+  \[
+    \bl
+    \mkwd{view} \defeq \lambda \textit{contents} . \\
+    \quad
+      \ot{div} \\
+      \qquad \ot{form} \\
+      \quad \qquad \htmltag{input}{\attr{id}{1} \; \attr{type}{"text"} \; \attr{value}{"h"} \; \attr{onInput}{\antiquote{\lambda x . x}}}{} \\
+      \quad \qquad \htmltag{div}{\attr{id}{2}}{\antiquote{\mkwd{reverseString}(\textit{contents})}} \\
+      \qquad \ct{form} \\
+    \quad
+      \ct{div} \\
+    \el
+  \]
+\end{frame}
+
+\begin{frame}{Formalism by Example}
+
+  \begin{mathpar}
+    \mkwd{model} \defeq "h"
+
+    \mkwd{updt} \defeq \lambda (\text{msg}, \text{model}) . \text{msg}
+  \end{mathpar}
+
+
+  \[
+    \bl
+    \mkwd{view} \defeq \lambda \textit{contents} . \\
+    \quad
+      \ot{div} \\
+      \qquad \ot{form} \\
+      \quad \qquad \htmltag{input}{\attr{id}{1} \; \attr{type}{"text"} \; \attr{value}{"h"} \; \attr{onInput}{\antiquote{\lambda x . x}}}{} \\
+      \quad \qquad \htmltag{div}{\attr{id}{2}}{\antiquote{\mkwd{reverseString}(\textit{contents})}} \\
+      \qquad \ct{form} \\
+    \quad
+      \ct{div} \\
+    \el
+  \]
+\end{frame}
+
+\begin{frame}{Formalism by Example}
+
+
+  \[
+    \vh \defeq
+    \bl
+      \ot{div} \\
+      \quad \ot{form} \\
+      \qquad \htmltag{input}{\attr{id}{1} \; \attr{type}{"text"} \; \attr{value}{"h"} \; \attr{onInput}{\lambda x . x}}{} \\
+      \qquad \htmltag{div}{\attr{id}{2}}{} \\
+      \quad \ct{form} \\
+      \ct{div} \\
+    \el
+  \]
+
+  \only<1>{
+    {
+      \Large
+    \[
+    \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\epsilon}
+    \]
+    }
+  }
+
+  \only<2>{
+    {
+      \Large
+    \[
+      \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\clickevt{1}}
+    \]
+    }
+  }
+
+  \only<3>{
+    {
+      \Large
+    \[
+      \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\clickevt{1}}
+    \]
+    }
+    \[
+      \vh(1, \mkwd{onClick}) \text{ undefined}
+    \]
+  }
+
+  \only<4>{
+    {
+      \Large
+    \[
+      \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\epsilon}
+    \]
+    }
+  }
+
+
+  \only<5>{
+    {
+      \Large
+    \[
+      \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\inputevt{1}{"hi"}}
+    \]
+    }
+  }
+
+  \only<6>{
+    {
+    \Large
+    \[
+      \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{(\lambda x . x) \app "hi"}{\epsilon}
+    \]
+    }
+    %
+    \[
+      \vh(1, \mkwd{onInput}) = \lambda x . x
+    \]
+  }
+
+  \only<7>{
+    {
+    \Large
+    \[
+      \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{"hi"}{\epsilon}
+    \]
+    }
+  }
+
+  \only<8>{
+    {
+    \Large
+    \[
+      \sys{\handlerproc{\idle}{"h"}{\mkwd{view}}{\mkwd{updt}}{"hi"}}{\vh}{\epsilon}{\epsilon}
+    \]
+    }
+  }
+
+  \only<9>{
+    {
+    \Large
+    \[
+      \sys{\handlerproc{
+          dddd
+      }{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\epsilon}
+    \]
+    }
+  }
 \end{frame}
 
 \begin{frame}{Syntax}
@@ -290,15 +441,14 @@ function _updateDom(doc) {
     \text{Terms} & L, M, N & ::= &
       % Basic lambda calculus
       x \midspace \lambda x . M \midspace M \app N \midspace () \midspace (M, N) \midspace \letin{(x, y)}{M}{N} \\
-      & & \midspace & \inl{x} \midspace \inr{x} \midspace \caseof{L}{\inl{x} \mapsto M; \inr{y} \mapsto N} \\
+      & & \midspace & \inl{M} \midspace \inr{M} \midspace \caseof{L}{\inl{x} \mapsto M; \inr{y} \mapsto N} \\
       & & \midspace & s \midspace n \midspace b \midspace \htmlterm{H} \\
       \\
     \text{Tag names} & \tagname{t} \\
-    \text{Identifiers} & i \\
     \text{Attribute names} & \mathit{at} \\
     \text{Event handlers} & \mkwd{eh} & ::= &
       \texttt{onClick} \midspace \texttt{onKeyDown} \midspace \texttt{onKeyUp} \\
-      \text{Attributes} & a & ::= & \mkwd{id} = i \midspace \mkwd{eh} = \textit{ab} \midspace  \textit{at} = \textit{ab}\\
+      \text{Attributes} & a & ::= & \mkwd{id} = n \midspace \mkwd{eh} = \textit{ab} \midspace  \textit{at} = \textit{ab}\\
       \text{Attribute bodies} & \textit{ab} & ::= & \antiquote{M} \midspace V \\
       \text{HTML} & H & ::= & \htmltag{t}{\seq{a}}{\seq{H}} \midspace s  \midspace \antiquote{M} \\
 \end{syntax}
@@ -401,7 +551,7 @@ function _updateDom(doc) {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Generalising Elm}
+\begin{frame}[fragile]{Can MVU support linearity?}
 
   \begin{fullpageitemize}
   \item We want \emph{linear models and messages}.
@@ -416,9 +566,9 @@ fun evtLoop(updt, render, model) {
     case msg ->
       var newModel = updt(msg, model);
       # Update DOM
-      VDom.updateDom(render((*\hlred{newModel}*)));
+      VDom.updateDom(render((*\color{red}{newModel}*)));
       # Loop with new model
-      evtLoop(updt, render, (*\hlred{newModel}*))
+      evtLoop(updt, render, (*\color{red}{newModel}*))
     }
 }
   \end{lstlisting}
@@ -428,7 +578,45 @@ fun evtLoop(updt, render, model) {
   \end{fullpageitemize}
 \end{frame}
 
-\begin{frame}[fragile]{MVU with Linearity}
+\begin{frame}[fragile]{MVU with Linearity (1)}
+
+\begin{minipage}{0.55\textwidth}
+  \begin{lstlisting}[language=links]
+fun evtLoop(ap, model, render, updt, extract) {
+  var (msg, _) = receive(request(ap));
+  var newModel = updt(msg, model);
+  # Update DOM
+  var (html, newModel) =
+    render(unrModel);
+  VDom.updateDom(html);
+  # Loop with new model
+  evtLoop(newModel, render, updt, extract)
+}
+  \end{lstlisting}
+\end{minipage}
+~
+\begin{minipage}{0.42\textwidth}
+  \begin{lstlisting}[numbers=none, backgroundcolor=\color{white}]
+runLinear :
+ forall model::Type(Any, Any),
+        msg::Type(Any, Any) .
+ (model,
+   (*\texttt{\textbf{\color{colorredorange}{(model) -> (HTML(msg), model)}}}*),
+   (model, msg) ~> (model))
+  ~> ()
+\end{lstlisting}
+\end{minipage}
+
+  \begin{fullpageitemize}
+  \item ``Standard'' way of generalising an unrestricted function: return an `updated' linear resource
+  \item Works, but breaks abstraction: rendering can in turn update model
+    \begin{itemize}
+      \item In our setting, could also perform session communication while rendering: is this what we want?
+    \end{itemize}
+  \end{fullpageitemize}
+\end{frame}
+
+\begin{frame}[fragile]{MVU with Linearity (2)}
 
 \begin{minipage}{0.55\textwidth}
   \begin{lstlisting}[language=links]
@@ -436,7 +624,7 @@ fun evtLoop(ap, model, render, updt, extract) {
   var (msg, _) = receive(request(ap));
   var newModel = updt(msg, model);
   # Extract unrestricted model
-  var (newModel, unrModel) = extract(newModel);
+  (*\texttt{\textbf{\color{colorredorange}{var (newModel, unrModel) = extract(newModel);}}} *)
   # Update DOM
   VDom.updateDom(render(unrModel));
   # Loop with new model

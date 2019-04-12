@@ -2,8 +2,8 @@
 
 \usepackage{forloop, microtype}
 \usepackage{wasysym}
-%\usepackage[dvipsnames]{xcolor}
 \usepackage{csquotes}
+\usepackage{color}
 %\usepackage{mathptmx}
 \usepackage{listings}
 \hypersetup{colorlinks=true,citecolor=blue}
@@ -57,7 +57,7 @@ fork, spawnClient, cancel, catch},%
   basicstyle=\linespread{1.3}\ttfamily\large,
   keywordstyle=\bfseries,
   language=Links,
-  backgroundcolor=\color{white}
+  backgroundcolor=\color{black}
 }
 
 
@@ -257,7 +257,7 @@ height=1cm,text centered, text width=8cm, draw=black, anchor=center, fill=red!30
 
 \lstset{
    language=JavaScript,
-   backgroundcolor=\color{lightgray},
+   backgroundcolor=\color{colorlightgray},
    extendedchars=true,
    basicstyle=\footnotesize\ttfamily,
    showstringspaces=false,
@@ -281,14 +281,21 @@ height=1cm,text centered, text width=8cm, draw=black, anchor=center, fill=red!30
 \newcommand{\antiquote}[1]{\mathbf{\{} #1 \mathbf{\}}}
 \newcommand{\htmlty}[1]{\mkwd{HTML}(#1)}
 \newcommand{\attrty}[1]{\mkwd{Attr}(#1)}
+\newcommand{\attr}[2]{\text{#1}=#2}
 \newcommand{\tagname}[1]{\mathtt{#1}}
 \newcommand{\htmltag}[3]{{<} \tagname{#1} \: #2 {>} #3 {<} / \tagname{#1}{>}}
+\newcommand{\htmltagonly}[2]{{<} \tagname{#1} {>} #2 {<} / \tagname{#1}{>}}
+\newcommand{\opentag}[2]{{<} \tagname{#1} \: #2 {>}}
+\newcommand{\closetag}[2]{{<} / \tagname{#1} \: #2 {>}}
+\newcommand{\ot}[1]{{<} \tagname{#1} {>}}
+\newcommand{\ct}[1]{{<} / \tagname{#1}{>}}
 \newcommand{\htmlterm}[1]{\calcwd{html} \app #1}
 \newcommand{\evtty}[1]{\mkwd{ty}(#1)}
 
 \newcommand{\clickevt}[1]{\mkwd{click}_{#1}}
 \newcommand{\keydownevt}[2]{\mkwd{keyDown}_{#1, #2}}
 \newcommand{\keyupevt}[2]{\mkwd{keyUp}_{#1, #2}}
+\newcommand{\inputevt}[2]{\mkwd{input}_{#1, #2}}
 \newcommand{\vh}{V_{\textsf{H}}\xspace}
 \newcommand{\va}{V_{\textsf{a}}\xspace}
 
@@ -313,5 +320,6 @@ height=1cm,text centered, text width=8cm, draw=black, anchor=center, fill=red!30
 \newcommand{\caseof}[2]{\calcwd{case} \: #1 \: \{ #2 \}}
 \newcommand{\letin}[3]{\calcwd{let} \: #1 = #2 \: \calcwd{in} \: #3}
 \usepackage{soul}
-\DeclareRobustCommand{\hlred}[1]{{\sethlcolor{colorpink}\hl{#1}}}
+\newcommand{\hlred}[1]{\hl{#1}}
+%\DeclareRobustCommand{\hlred}[1]{{\sethlcolor{colorpink}\hl{#1}}}
 
