@@ -62,29 +62,26 @@ $
 
 
 \begin{frame}[fragile]{Vanilla Links Implementation}
-%fun getProp(id, propName) { ... }
-%fun setProp(id, propName, newVal) { ... }
+
+  \vspace{-0.5em}
   \begin{lstlisting}[language=links]
-fun mainPage() {
-  fun handleEvents() {
-    receive { case UpdateLabel ->
-      var value = getProp("toReverse", "value");
-      setProp("label", "innerHTML", reverseString(value));
-      handleEvents()
-    }
-  }
-  var evtHandler = spawnClient { handleEvents() };
-  page
-    <html>
-      <body>
-        <form>
-          <input type="text" id="toReverse"
-            l:onkeyup="{evtHandler ! UpdateLabel}"></input>
-        </form>
-        <div id="label"></div>
-      </body>
-    </html>
-}
+fun handleEvents() {
+  receive { case UpdateLabel ->
+    var value = getProp("toReverse", "value");
+    setProp("label", "innerHTML", reverseString(value));
+    handleEvents()
+} }
+var evtHandler = spawnClient { handleEvents() };
+page
+  <html>
+    <body>
+      <form>
+        <input type="text" id="toReverse"
+          l:onkeyup="{evtHandler ! UpdateLabel}"></input>
+      </form>
+      <div id="label"></div>
+    </body>
+  </html>
   \end{lstlisting}
 \end{frame}
 
@@ -287,31 +284,6 @@ function _updateDom(doc) {
     \quad
       \ot{div} \\
       \qquad \ot{form} \\
-      \quad \qquad \htmltag{input}{\attr{id}{1} \; \attr{type}{"text"} \;
-      \attr{onInput}{\antiquote{\lambda x . x}}}{} \\
-      \quad \qquad \htmltag{div}{\attr{id}{2}}{\antiquote{\mkwd{reverseString}(\textit{contents})}} \\
-      \qquad \ct{form} \\
-    \quad
-      \ct{div} \\
-    \el
-  \]
-\end{frame}
-
-\begin{frame}{Formalism by Example}
-
-  \begin{mathpar}
-    \mkwd{model} \defeq "h"
-
-    \mkwd{updt} \defeq \lambda (\text{msg}, \text{model}) . \text{msg}
-  \end{mathpar}
-
-
-  \[
-    \bl
-    \mkwd{view} \defeq \lambda \textit{contents} . \\
-    \quad
-      \ot{div} \\
-      \qquad \ot{form} \\
       \quad \qquad \htmltag{input}{\attr{id}{1} \; \attr{type}{"text"} \; \attr{value}{\antiquote{\textit{contents}}} \;
         \attr{onInput}{\antiquote{\lambda x . x}}}{} \\
       \quad \qquad \htmltag{div}{\attr{id}{2}}{\antiquote{\mkwd{reverseString}(\textit{contents})}} \\
@@ -323,6 +295,8 @@ function _updateDom(doc) {
 \end{frame}
 
 \begin{frame}{Formalism by Example}
+
+  \only<1,3,6>{
   \[
     \vh \defeq
     \bl
@@ -334,6 +308,7 @@ function _updateDom(doc) {
       \ct{div} \\
     \el
   \]
+}
 
   \only<1>{
     {
@@ -642,7 +617,8 @@ function _updateDom(doc) {
 
     \small
     \begin{syntax}
-      \text{Types} & A, B & ::= & \one \midspace A \to B \midspace A \times B  \midspace A + B \midspace \htmlty{A} \midspace C \\
+      \text{Types} & A, B & ::= & \one \midspace A \to B \midspace A \times B  \midspace A + B \midspace
+      {\color{colorredorange}{\htmlty{A}}} \midspace C \\
     \text{Base types} & C & ::= & \mkwd{String} \midspace \mkwd{Int} \midspace \mkwd{Bool} \\ \\
     \text{String literals} & s \\
     \text{Integers} & n \\
@@ -651,15 +627,15 @@ function _updateDom(doc) {
       % Basic lambda calculus
       x \midspace \lambda x . M \midspace M \app N \midspace () \midspace (M, N) \midspace \letin{(x, y)}{M}{N} \\
       & & \midspace & \inl{M} \midspace \inr{M} \midspace \caseof{L}{\inl{x} \mapsto M; \inr{y} \mapsto N} \\
-      & & \midspace & s \midspace n \midspace b \midspace \htmlterm{H} \\
+      & & \midspace & s \midspace n \midspace b \midspace {\color{colorredorange} \htmlterm{H}} \\
       \\
-    \text{Tag names} & \tagname{t} \\
-    \text{Attribute names} & \mathit{at} \\
-    \text{Event handlers} & \mkwd{eh} & ::= &
-      \texttt{onClick} \midspace \texttt{onKeyDown} \midspace \texttt{onKeyUp} \\
-      \text{Attributes} & a & ::= & \mkwd{id} = n \midspace \mkwd{eh} = \textit{ab} \midspace  \textit{at} = \textit{ab}\\
-      \text{Attribute bodies} & \textit{ab} & ::= & \antiquote{M} \midspace V \\
-      \text{HTML} & H & ::= & \htmltag{t}{\seq{a}}{\seq{H}} \midspace s  \midspace \antiquote{M} \\
+    \highlight{\text{Tag names}} & \highlight{\tagname{t}} \\
+    \highlight{\text{Attribute names}} & \highlight{\textit{at}} \\
+    \highlight{\text{Event handlers}} & \highlight{\mkwd{eh}} & \highlight{::=} &
+    \highlight{\texttt{onClick} \midspace \texttt{onKeyDown} \midspace \texttt{onKeyUp}} \\
+    \highlight{\text{Attributes}} & \highlight{a} & \highlight{::=} & \highlight{\mkwd{id} = n \midspace \mkwd{eh} = \textit{ab} \midspace  \textit{at} = \textit{ab}}\\
+    \highlight{\text{Attribute bodies}} & \highlight{\textit{ab}} & \highlight{::=} & \highlight{\antiquote{M} \midspace V} \\
+    \highlight{\text{HTML}} & \highlight{H} & \highlight{::=} & \highlight{\htmltag{t}{\seq{a}}{\seq{H}} \midspace s  \midspace \antiquote{M}} \\
 \end{syntax}
 \end{frame}
 
@@ -742,14 +718,14 @@ function _updateDom(doc) {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Session Types}
+\begin{frame}[fragile]{Session Types in Links}
 \begin{lstlisting}[language=links]
   typename EqualityServer = ?Int.?Int.!Bool.End;
 
   sig equalityServer : (EqualityServer) ~> ()
   fun equalityServer(s) {
     var (x, t) = receive(s);
-    (*\hlred{var (y, s) = receive(s);} *)
+    (*\color{red}{var (y, s) = receive(s);}*)
     var (z, s) = receive(s);
     var s = send(x == y, s);
     close(s)
@@ -788,7 +764,7 @@ fun evtLoop(updt, render, model) {
 
 \begin{minipage}{0.55\textwidth}
   \begin{lstlisting}[language=links]
-fun evtLoop(ap, model, render, updt, extract) {
+fun evtLoop(ap, model, render, updt) {
   var (msg, _) = receive(request(ap));
   var newModel = updt(msg, model);
   # Update DOM
@@ -796,7 +772,7 @@ fun evtLoop(ap, model, render, updt, extract) {
     render(unrModel);
   VDom.updateDom(html);
   # Loop with new model
-  evtLoop(newModel, render, updt, extract)
+  evtLoop(newModel, render, updt)
 }
   \end{lstlisting}
 \end{minipage}
@@ -814,8 +790,8 @@ runLinear :
 \end{minipage}
 
   \begin{fullpageitemize}
-  \item ``Standard'' way of generalising an unrestricted function: return an `updated' linear resource
-  \item Works, but breaks abstraction: rendering can in turn update model
+  \item ``Standard'' way of generalising a function: return an `updated' linear resource
+  \item Works, but breaks abstraction: rendering can change model (also perform session communication)
    %\begin{itemize}
    %  \item In our setting, could also perform session communication while rendering: is this what we want?
    %\end{itemize}
@@ -840,17 +816,18 @@ fun evtLoop(ap, model, render, updt, extract) {
 \end{minipage}
 ~
 \begin{minipage}{0.42\textwidth}
-\begin{verbatim}
+\begin{lstlisting}[numbers=none, backgroundcolor=\color{white}]
 runLinear :
-  forall model :: Type(Any, Any),
-         unrModel :: Type(Unl, Any),
-         msg :: Type(Any, Any) .
+  forall
+    model::Type(Any, Any),
+    unrModel::Type(Unl, Any),
+    msg::Type(Any, Any) .
   (model,
    (unrModel) ~> HTML(msg),
    (model, msg) ~> (model),
-   (model) ~> (model, unrModel))
+   (*\color{colorredorange}{(model) -> (model, unrModel)}*)
   ~> ()
-\end{verbatim}
+\end{lstlisting}
 \end{minipage}
 
   \begin{fullpageitemize}
@@ -863,32 +840,68 @@ runLinear :
 
 \framecard{{\color{white}\bigtext{Demo: Session-typed Distributed Chat}}}
 
+\begin{frame}[fragile]{Session-typed communication meets MVU}
 
-\begin{frame}{Session Types in Links}
-\end{frame}
-
-\begin{frame}{Distributed Session Types}
-\end{frame}
-
-\begin{frame}{Linearity meets MVU}
-\end{frame}
-
-\begin{frame}{Session-typed communication meets MVU}
-\end{frame}
-
-\begin{frame}{A nontrivial application}
+  \begin{fullpageitemize}
+  \item { \Large \textbf{Key idea 1:} Session Channels in Model}
+\begin{lstlisting}[language=Links]
+typename Model =
+  [|  NotConnected : (NotConnectedModel, (*\color{colorredorange}{ClientSelect}*))
+   |  Connected :
+        (Nickname, (*\color{colorredorange}{ClientSend}*),
+         Maybe(((*\color{colorredorange}{ModeratorSend}*), Nickname)),
+         RoomInfo) |];
+\end{lstlisting}
+  \item {\Large \textbf{Key idea 2:} Spawn processes for blocking receives}
+\begin{lstlisting}[language=Links]
+fun clientReceive(cr) {
+  offer(cr) {
+    case IncomingChatMessage(cr) ->
+      var ((nick, msg), cr) = receive(cr);
+      SessionIncomingChat(nick, msg, cr)
+    ...
+  }
+}
+SpawnLinear(linfun() { clientReceive(cr) })
+\end{lstlisting}
+  \item
+  \end{fullpageitemize}
 \end{frame}
 
 \framecard{{\color{white}\bigtext{Wrapping up}}}
 
-\begin{frame}{The future}
-  \begin{fullpageitemize}
-    \item {\large \textbf{Formalising Extensions}}
-    \item {\large \textbf{Small-step interpreter}}
-  \end{fullpageitemize}
-\end{frame}
+\begin{frame}{Ende}
 
-\begin{frame}{Conclusion}
+  \begin{fullpageitemize}
+    \item { \Large \textbf{Summary} }
+        \begin{itemize}
+            \itemR MVU: An architecture for functional web applications
+            \itemR First formal description of MVU
+            \itemR First integration of MVU and linearity, greatly easing development of distributed session-typed applications
+        \end{itemize}
+%
+        \vspace{1em}
+      \item {\Large \textbf{Ongoing / Future Work}}
+        \begin{itemize}
+          \itemR Formalising extensions
+          \itemR Small-step interpreter
+          \itemR MVU + rows
+        \end{itemize}
+
+  \vspace{1em}
+  \centering
+  \texttt{@Simon\_JF}
+
+  \centering
+  \texttt{simon.fowler@ed.ac.uk}
+
+  \centering
+  \url{http://www.links-lang.org}
+
+  \centering
+  \texttt{opam install links}
+
+ \end{fullpageitemize}
 \end{frame}
 
 \end{document}
