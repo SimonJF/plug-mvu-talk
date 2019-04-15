@@ -424,8 +424,7 @@ function _updateDom(doc) {
          \begin{array}{l}
            \begin{aligned}
              & \letintwo{m'}{(\lambda (\textit{model}, \textit{msg}). \textit{msg}) \app ("\text{h}", "\text{hi}")} \\
-             & \letintwo{\textit{html}}{v \app m'} \\
-             & (m', \textit{html})
+             & (m', v \app m')
            \end{aligned}
          \end{array}
        }
@@ -443,8 +442,7 @@ function _updateDom(doc) {
          \begin{array}{l}
            \begin{aligned}
              & \letintwo{m'}{"\text{hi}"} \\
-             & \letintwo{\textit{html}}{v \app m'} \\
-             & (m', \textit{html})
+             & (m', v \app m')
            \end{aligned}
          \end{array}
        }
@@ -459,19 +457,185 @@ function _updateDom(doc) {
    \[
      \sys{\handlerproc{
          {\normalsize
-         \begin{array}{l}
-           \begin{aligned}
-             & \letintwo{\textit{html}}{v \app "\text{hi}"} \\
-             & ("\text{hi}", \textit{html})
-           \end{aligned}
-         \end{array}
+           ("\text{hi}", v \app "\text{hi}")
        }
      }{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\epsilon}
    \]
    }
  }
 
+\end{frame}
 
+\begin{frame}{Formalism by Example}
+
+  \only<1>{
+   \Large
+   \[
+     \sys{\handlerproc{
+    {\small
+      ("\text{hi}", \bl
+      (\lambda \text{contents}. \\
+    \quad \ot{div} \\
+      \qquad \ot{form} \\
+      \quad \qquad \htmltag{input}{\attr{id}{1} \; \attr{type}{"text"} \; \\
+        \qquad \qquad
+      \attr{value}{\antiquote{\textit{contents}}}{} \\
+        \qquad \qquad
+      \attr{onInput}{\antiquote{\lambda x . x}}}{} \\
+      \quad \qquad \opentag{div}{\attr{id}{2}} \\
+         \qquad \qquad
+       \antiquote{\mkwd{reverseString}(\textit{contents})} \\
+       \quad \qquad \closetag{div} \\
+      \qquad \ct{form} \\
+    \quad
+    \ct{div} ) \app "\text{hi}" \\
+    \el
+    )
+  }
+   }{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\epsilon}
+  \]
+  }
+%
+  \only<2>{
+   \Large
+   \[
+     \sys{\handlerproc{
+    {\small
+      ("\text{hi}", \bl
+    \ot{div} \\
+      \quad \ot{form} \\
+      \qquad \htmltag{input}{\attr{id}{1} \; \attr{type}{"text"} \; \\
+        \quad \qquad
+      \attr{value}{\antiquote{"\text{hi}"}}{} \\
+        \quad \qquad
+      \attr{onInput}{\antiquote{\lambda x . x}}}{} \\
+      \qquad \opentag{div}{\attr{id}{2}} \\
+         \quad \qquad
+       \antiquote{\mkwd{reverseString}("\textit{hi}")} \\
+       \qquad \closetag{div} \\
+      \quad \ct{form} \\
+    \ct{div} \\
+    \el)
+  }
+   }{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\epsilon}
+  \]
+  }
+%
+  \only<3>{
+   \Large
+   \[
+     \sys{\handlerproc{
+    {\small
+      ("\text{hi}", \bl
+    \ot{div} \\
+      \quad \ot{form} \\
+      \qquad \htmltag{input}{\attr{id}{1} \; \attr{type}{"text"} \; \\
+        \quad \qquad
+      \attr{value}{"\text{hi}"}{} \\
+        \quad \qquad
+      \attr{onInput}{\antiquote{\lambda x . x}}}{} \\
+      \qquad \opentag{div}{\attr{id}{2}} \\
+         \quad \qquad
+       \antiquote{\mkwd{reverseString}("\textit{hi}")} \\
+       \qquad \closetag{div} \\
+      \quad \ct{form} \\
+    \ct{div} \\
+    \el)
+  }
+   }{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\epsilon}
+  \]
+  }
+%
+  \only<4>{
+   \Large
+   \[
+     \sys{\handlerproc{
+    {\small
+      ("\text{hi}", \bl
+    \ot{div} \\
+      \quad \ot{form} \\
+      \qquad \htmltag{input}{\attr{id}{1} \; \attr{type}{"text"} \; \\
+        \quad \qquad
+      \attr{value}{"\text{hi}"}{} \\
+        \quad \qquad
+      \attr{onInput}{\lambda x . x}}{} \\
+      \qquad \opentag{div}{\attr{id}{2}} \\
+         \quad \qquad
+       \antiquote{\mkwd{reverseString}("\textit{hi}")} \\
+       \qquad \closetag{div} \\
+      \quad \ct{form} \\
+    \ct{div} \\
+    \el)
+  }
+   }{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\epsilon}
+  \]
+  }
+%
+  \only<5>{
+   \Large
+   \[
+     \sys{\handlerproc{
+    {\small
+      ("\text{hi}", \bl
+    \ot{div} \\
+      \quad \ot{form} \\
+      \qquad \htmltag{input}{\attr{id}{1} \; \attr{type}{"text"} \; \\
+        \quad \qquad
+      \attr{value}{"\text{hi}"}{} \\
+        \quad \qquad
+      \attr{onInput}{\lambda x . x}}{} \\
+      \qquad \opentag{div}{\attr{id}{2}} \antiquote{"\textit{ih}"} \closetag{div} \\
+      \quad \ct{form} \\
+    \ct{div} \\
+    \el)
+  }
+   }{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\epsilon}
+  \]
+  }
+%
+  \only<6>{
+   \Large
+   \[
+     \sys{\handlerproc{
+    {\small
+      ("\text{hi}", \bl
+    \ot{div} \\
+      \quad \ot{form} \\
+      \qquad \htmltag{input}{\attr{id}{1} \; \attr{type}{"text"} \; \\
+        \quad \qquad
+      \attr{value}{"\text{hi}"}{} \\
+        \quad \qquad
+      \attr{onInput}{\lambda x . x}}{} \\
+      \qquad \opentag{div}{\attr{id}{2}} \textit{ih} \closetag{div} \\
+      \quad \ct{form} \\
+    \ct{div}  \\
+    \el)
+  }
+   }{"h"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{\vh}{\epsilon}{\epsilon}
+  \]
+  }
+%
+  \only<7>{
+   \Large
+   \[
+     \sys{\handlerproc{\idle}{"hi"}{\mkwd{view}}{\mkwd{updt}}{\epsilon}}{
+       {\small
+      \bl
+        \ot{div} \\
+          \quad \ot{form} \\
+          \qquad \htmltag{input}{\attr{id}{1} \; \attr{type}{"text"} \; \\
+            \quad \qquad
+          \attr{value}{"\text{hi}"}{} \\
+            \quad \qquad
+          \attr{onInput}{\lambda x . x}}{} \\
+          \qquad \opentag{div}{\attr{id}{2}} \textit{ih} \closetag{div} \\
+          \quad \ct{form} \\
+        \ct{div}  \\
+        \el
+      }
+     }{\epsilon}{\epsilon}
+  \]
+  }
 \end{frame}
 
 \begin{frame}{Syntax}
@@ -523,9 +687,6 @@ function _updateDom(doc) {
 
     ``Under environment $\Gamma$, HTML element $a$ produces messages of type $A$.''
   \end{center}
-\end{frame}
-
-\begin{frame}{Configurations}
 \end{frame}
 
 \begin{frame}{Results}
@@ -655,9 +816,9 @@ runLinear :
   \begin{fullpageitemize}
   \item ``Standard'' way of generalising an unrestricted function: return an `updated' linear resource
   \item Works, but breaks abstraction: rendering can in turn update model
-    \begin{itemize}
-      \item In our setting, could also perform session communication while rendering: is this what we want?
-    \end{itemize}
+   %\begin{itemize}
+   %  \item In our setting, could also perform session communication while rendering: is this what we want?
+   %\end{itemize}
   \end{fullpageitemize}
 \end{frame}
 
