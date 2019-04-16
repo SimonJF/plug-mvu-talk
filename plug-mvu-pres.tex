@@ -158,12 +158,12 @@ fun mainPage() {
   \item<1-> User-defined types:
     \begin{itemize}
       \itemR Model type \verb+Model+, containing application data
-      \itemR Message type \verb+Msg+, describing messages produced by components
+      \itemR Message type \verb+Message+, describing messages produced by components
     \end{itemize}
     \vspace{0em}
 
-  \item<2-> HTML type \verb+HTML(Msg)+: an HTML element producing a message of
-    type \verb+Msg+
+  \item<2-> HTML type \verb+HTML(Message)+: an HTML element producing a message of
+    type \verb+Message+
 
   \item<3-> A function, \verb+run+:
     \begin{verbatim}
@@ -639,6 +639,28 @@ function _updateDom(doc) {
 \end{syntax}
 \end{frame}
 
+\begin{frame}{Configurations}
+
+  {\Large
+    \[
+      \begin{array}{@{}l@{\:\:\:}r@{\:\:\:}c@{\:\:\:}l}
+      \text{Handler state} & S & ::= & \idle \midspace M \\
+      \text{Event loop processes} & P & ::= & \handlerproc{S}{V_m}{V_v}{V_u}{\seq{W}} \\
+      \text{System configuration} & \config{C} & ::= & \sys{P}{\vh}{\seq{M}}{\seq{e}} \\
+    \end{array}
+  \]
+  }
+
+  \vspace{2em}
+
+  \begin{fullpageitemize}
+    \item $P$: Event loop process
+    \item $\vh$: Current web page
+    \item $\seq{M}$: Event handler processes, running concurrently
+    \item $\seq{e}$: Event queue
+  \end{fullpageitemize}
+\end{frame}
+
 \begin{frame}{Typing Judgements}
 
   \begin{center}
@@ -647,7 +669,7 @@ function _updateDom(doc) {
 
     ``Under environment $\Gamma$, term $M$ has type $A$.''
   \end{center}
-  \vspace{1em}
+  \vspace{0.75em}
 
   \begin{center}
   {\Huge \framebox{$\Gamma \vdash a \produces{A}$}}
@@ -655,13 +677,21 @@ function _updateDom(doc) {
 
     ``Under environment $\Gamma$, HTML attribute $a$ produces messages of type $A$.''
   \end{center}
-  \vspace{1em}
+  \vspace{0.75em}
 
   \begin{center}
   {\Huge \framebox{$\Gamma \vdash H \produces{A}$}}
   \vspace{0.5em}
 
-    ``Under environment $\Gamma$, HTML element $a$ produces messages of type $A$.''
+    ``Under environment $\Gamma$, HTML element $H$ produces messages of type $A$.''
+  \end{center}
+  \vspace{0.75em}
+
+  \begin{center}
+    {\Huge \framebox{$\Gamma \vdash \config{C}$}}
+  \vspace{0.5em}
+
+  ``Under environment $\Gamma$, configuration $\config{C}$ is well-typed.''
   \end{center}
 \end{frame}
 
